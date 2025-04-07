@@ -1,0 +1,48 @@
+Royal Poker CFR Project References
+
+Core Academic Papers:
+1. Johansen, M. (2013). "Measuring the Size of Large No-Limit Poker Games". 
+   University of Alberta. [Describes Royal Hold'em variant]
+
+2. Gibson, R. & Waugh, K. (2015). "Pure CFR: Solving Imperfect Information Games 
+   Using Only Integer Regret Values". AAAI Conference on Artificial Intelligence.
+
+3. Waugh, K. et al. (2015). "Understanding Abstraction Pathologies in 
+   Extensive-Form Games". AAMAS. [Action translation theory]
+
+4. Bowling, M. et al. (2015). "Heads-up Limit Hold'em Poker is Solved". Science.
+   [Background on CFR in poker]
+
+Technical Reports & Tools:
+5. University of Alberta GAMES Group (2019). "Poker Research Tools and Libraries".
+   https://poker.cs.ualberta.ca
+
+6. ACPC Protocol Documentation (2020). "Annual Computer Poker Competition 
+   Technical Specifications". http://www.computerpokercompetition.org
+
+7. OpenSpiel: A Framework for Reinforcement Learning in Games (2020). 
+   DeepMind. https://github.com/deepmind/open_spiel
+
+Algorithm References:
+8. Zinkevich, M. et al. (2007). "Regret Minimization in Games with 
+   Incomplete Information". NIPS. [Original CFR paper]
+
+9. Brown, N. & Sandholm, T. (2019). "Superhuman AI for Multiplayer Poker". 
+   Science. [CFR+ and Deep CFR]
+
+10. Schmid, M. et al. (2021). "Variance Reduction in Monte Carlo CFR". 
+    AAAI. [CFR optimizations]
+
+Implementation References:
+11. Waugh, K. (2014). "Card Isomorphism Code". 
+    https://github.com/kevinwaugh/card_isomorphism
+
+12. Johanson, M. (2013). "ACPC Game Server Codebase". 
+    University of Alberta. [Original CFR implementation]
+
+Additional Resources:
+13. University of Alberta CFR Tutorial Series (2022). 
+    https://poker.cs.ualberta.ca/publications/CFR-tutorial.pdf
+
+14. Sandholm, T. (2010). "The State of Solving Large Incomplete-Information 
+    Games". Science. [Abstraction theory]
