@@ -1,6 +1,6 @@
 class Config:
     # CFR parameters
-    CFR_ITERATIONS = 250_000  # Increased for better convergence
+    CFR_ITERATIONS = 100_000  # Increased for better convergence
     CFR_VARIANT = "CFR+"     # Keep CFR+ as it's already optimal
     
     # Optimization flags

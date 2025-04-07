@@ -28,6 +28,7 @@ ENV/
 # Project specific
 visualization/
 logs/
+strategy/*.json
 results/*.json
 strategy/*.json
 !strategy/3B_CFR+_strategy.json
