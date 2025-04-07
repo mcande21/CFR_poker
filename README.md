@@ -33,14 +33,14 @@ The project includes multiple CFR variants:
 
 ## Running the Game
 
-To play against the AI:
-```
-python kuhn_poker_game.py
-```
-
 To train new strategies:
 ```
 python Main.py
+```
+
+To play against the AI:
+```
+python kuhn_poker_game.py
 ```
 
 To analyze existing strategies:
