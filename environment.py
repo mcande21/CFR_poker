@@ -1,5 +1,4 @@
 import random
-from config import Config
 
 class KuhnPokerEnv:
     def __init__(self):
