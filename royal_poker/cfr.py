@@ -80,7 +80,7 @@ class KuhnCFR:
                 # Showdown
                 self.env.hands = cards.copy()
                 self.env.history = history.copy()
-                self.env._resolve_showdown()
+                self.env.determine_win()
                 return self.env.get_payoff(0)
             elif history[-2:] == ["bet", "check"]:
                 # Player folded

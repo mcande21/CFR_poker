@@ -50,40 +50,66 @@ class KuhnPokerEnv:
         return (bucket, tuple(self.history))
 
     def get_legal_actions(self):
-        return ["check", "bet"] if not self.history else ["call", "fold"]
+        """ 
+        Return valid actions
+        - if there is no history --> check/bet
+        - if a player just checked --> check/bet
+        - if a player just bet --> call/fold
+        """
+        if not self.history or (len(self.history) == 1 and self.history[0] == "check"):
+            return ["check", "bet"]
+        else:
+            return ["call", "fold"]
 
     def step(self, action):
+        """ Conduct action """
         self.history.append(action)
         
+        # Bets can only be 1 chip
         if action == "bet":
             self.pot += 1
+            # switch player
             self.current_player = 1 - self.current_player
+
         elif action == "check":
+            # switch player
             self.current_player = 1 - self.current_player
+            # both players just checked --> determine winner
             if len(self.history) == 2:
                 self.terminal = True
-                self._resolve_showdown()
+                self.determine_win()
+        # both players just bet --> detemrine winner
         elif action == "call":
             self.pot += 1
             self.terminal = True
-            self._resolve_showdown()
+            self.determine_win()
+        # current player folded --> set winner
         elif action == "fold":
             self.terminal = True
             self.winner = 1 - self.current_player
-            
-        return self.infostate(), 0, self.terminal
+        
+        # return state, reward placeholder, end of game
+        return self.state(), 0, self.terminal
 
-    def _resolve_showdown(self):
-        self.winner = 0 if self.hands[0] > self.hands[1] else 1
+    def determine_win(self):
+        """ determines the winner """
+        if self.hands[0] == self.hands[1]:
+            # It's a tie
+            self.winner = None
+        else:
+            self.winner = 0 if self.hands[0] > self.hands[1] else 1
 
     def get_payoff(self, player):
+        """ Calculates reward for agent """
+        # game is still going, no reward
         if not self.terminal:
             return 0
             
-        if "fold" in self.history:
-            return self.pot // 2 if player == self.winner else -self.pot // 2
-        
+        # Handle tie case
+        if self.winner is None:
+            return 0.1
+            
         if player == self.winner:
-            return self.pot // 2
+            return 0.25
         else:
-            return -self.pot // 2
+            return -0.75

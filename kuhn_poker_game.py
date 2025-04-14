@@ -82,9 +82,10 @@ class KuhnPokerGame:
         self.start_new_round()
     
     def start_new_round(self):
-        amount = Config.DECK_SIZE // 3
-        # Create deck with Jacks (0), Queens (1), and Kings (2)
-        self.deck = ([0] * amount) + ([1] * amount) + ([2] * amount)
+        # Create deck with the same distribution as the training environment (33 of each card + 1 random)
+        self.deck = ([0] * 33) + ([1] * 33) + ([2] * 33)
+        # Add one extra random card to match env.py
+        self.deck.append(random.choice([0, 1, 2]))
 
         random.shuffle(self.deck)
         

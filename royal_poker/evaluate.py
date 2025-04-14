@@ -76,7 +76,7 @@ class Evaluator:
             return env.get_payoff(1)  # Return opponent's payoff
         
         player = env.current_player
-        infostate = env.infostate()
+        infostate = env.state()
         actions = env.get_legal_actions()
         
         # Current player uses the strategy
@@ -155,7 +155,7 @@ class Evaluator:
                     env.reset()
                     while not env.terminal:
                         player = env.current_player
-                        infostate = env.infostate()
+                        infostate = env.state()
                         actions = env.get_legal_actions()
                         
                         if player == 0:
