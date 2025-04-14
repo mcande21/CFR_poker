@@ -79,14 +79,22 @@ class KuhnPokerEnv:
 
     def determine_win(self):
         """ determines the winner """
-        self.winner = 0 if self.hands[0] > self.hands[1] else 1
+        if self.hands[0] == self.hands[1]:
+            # It's a tie
+            self.winner = None
+        else:
+            self.winner = 0 if self.hands[0] > self.hands[1] else 1
 
     def get_payoff(self, player):
         """ Calculates reward for agent """
         # game is still going, no reward
         if not self.terminal:
             return 0
-
+            
+        # Handle tie case
+        if self.winner is None:
+            return 0
+            
         if player == self.winner:
             return 1
         else:
