@@ -78,8 +78,8 @@ class TestKuhnPokerEnv(unittest.TestCase):
         
         # Force specific cards for testing
         self.env.hands = [1, 0]  # Player 0 has Queen (1), Player 1 has Jack (0)
-        print(f"Player 0 card: {self.card_name(self.env.hands[0])} (Queen)")
-        print(f"Player 1 card: {self.card_name(self.env.hands[1])} (Jack)")
+        print(f"Player 0 card: {self.card_name(self.env.hands[0])}")
+        print(f"Player 1 card: {self.card_name(self.env.hands[1])}")
         
         # Player 0 checks
         print("\nPlayer 0 checks")
@@ -110,8 +110,8 @@ class TestKuhnPokerEnv(unittest.TestCase):
         
         # Force specific cards for testing
         self.env.hands = [0, 2]  # Player 0 has Jack (0), Player 1 has King (2)
-        print(f"Player 0 card: {self.card_name(self.env.hands[0])} (Jack)")
-        print(f"Player 1 card: {self.card_name(self.env.hands[1])} (King)")
+        print(f"Player 0 card: {self.card_name(self.env.hands[0])}")
+        print(f"Player 1 card: {self.card_name(self.env.hands[1])}")
         
         # Player 0 bets
         print("\nPlayer 0 bets")
@@ -146,8 +146,8 @@ class TestKuhnPokerEnv(unittest.TestCase):
         
         # Force specific cards for testing
         self.env.hands = [2, 0]  # Player 0 has King (2), Player 1 has Jack (0)
-        print(f"Player 0 card: {self.card_name(self.env.hands[0])} (King)")
-        print(f"Player 1 card: {self.card_name(self.env.hands[1])} (Jack)")
+        print(f"Player 0 card: {self.card_name(self.env.hands[0])}")
+        print(f"Player 1 card: {self.card_name(self.env.hands[1])}")
         
         # Player 0 bets
         print("\nPlayer 0 bets")
@@ -180,8 +180,8 @@ class TestKuhnPokerEnv(unittest.TestCase):
         
         # Force specific cards for testing
         self.env.hands = [0, 1]  # Player 0 has Jack (0), Player 1 has Queen (1)
-        print(f"Player 0 card: {self.card_name(self.env.hands[0])} (Jack)")
-        print(f"Player 1 card: {self.card_name(self.env.hands[1])} (Queen)")
+        print(f"Player 0 card: {self.card_name(self.env.hands[0])}")
+        print(f"Player 1 card: {self.card_name(self.env.hands[1])}")
         
         # Player 0 checks
         print("\nPlayer 0 checks")
@@ -224,8 +224,8 @@ class TestKuhnPokerEnv(unittest.TestCase):
         
         # Force specific cards for testing
         self.env.hands = [0, 1]  # Player 0 has Jack (0), Player 1 has Queen (1)
-        print(f"Player 0 card: {self.card_name(self.env.hands[0])} (Jack)")
-        print(f"Player 1 card: {self.card_name(self.env.hands[1])} (Queen)")
+        print(f"Player 0 card: {self.card_name(self.env.hands[0])}")
+        print(f"Player 1 card: {self.card_name(self.env.hands[1])}")
         
         # Player 0 checks
         print("\nPlayer 0 checks")
@@ -266,8 +266,8 @@ class TestKuhnPokerEnv(unittest.TestCase):
         
         # Force same cards for both players
         self.env.hands = [1, 1]  # Both players have Queen (1)
-        print(f"Player 0 card: {self.card_name(self.env.hands[0])} (Queen)")
-        print(f"Player 1 card: {self.card_name(self.env.hands[1])} (Queen)")
+        print(f"Player 0 card: {self.card_name(self.env.hands[0])}")
+        print(f"Player 1 card: {self.card_name(self.env.hands[1])}")
         
         # Player 0 checks
         print("\nPlayer 0 checks")
