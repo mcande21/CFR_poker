@@ -82,7 +82,7 @@ class KuhnPokerEnv:
         self.winner = 0 if self.hands[0] > self.hands[1] else 1
 
     def get_payoff(self, player):
-        """ Calculates reward based off winnings """
+        """ Calculates reward for agent """
         # game is still going, no reward
         if not self.terminal:
             return 0
