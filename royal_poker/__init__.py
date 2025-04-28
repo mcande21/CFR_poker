@@ -26,6 +26,17 @@ from .utils import (
     load_strategy
 )
 
+# Import agent implementations
+from .agent import PokerAgent, CFRAgent, RuleBasedAgent
+
+# Also import the incremental CFRAgent from the root module
+import sys
+import os
+
+# Add the parent directory to sys.path
+sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
+from royal_poker.cfrAgent import CFRAgent as IncrementalCFRAgent
+
 __all__ = [
     'KuhnPokerEnv',
     'KuhnCFR',
@@ -33,5 +44,9 @@ __all__ = [
     'hand_strength',
     'action_translation',
     'save_strategy',
-    'load_strategy'
+    'load_strategy',
+    'PokerAgent',
+    'CFRAgent',
+    'RuleBasedAgent',
+    'IncrementalCFRAgent'
 ]

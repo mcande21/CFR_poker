@@ -1,6 +1,6 @@
 import unittest
 import random
-from environment import KuhnPokerEnv
+from submits.environment import KuhnPokerEnv
 
 class TestKuhnPokerEnv(unittest.TestCase):
     

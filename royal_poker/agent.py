@@ -11,32 +11,6 @@ class PokerAgent:
         """Take an action based on the current observation"""
         raise NotImplementedError("Subclasses must implement act method")
 
-class RandomAgent(PokerAgent):
-    """An agent that selects actions randomly"""
-    def __init__(self, name="Random"):
-        super().__init__(name)
-    
-    def act(self, observation, legal_actions):
-        """Select a random action from legal actions"""
-        return random.choice(legal_actions)
-
-class HumanAgent(PokerAgent):
-    """An agent controlled by human input"""
-    def __init__(self, name="Human"):
-        super().__init__(name)
-    
-    def act(self, observation, legal_actions):
-        """Get action from human input"""
-        print(f"\nYour info: {observation}")
-        print(f"Legal actions: {legal_actions}")
-        
-        while True:
-            action = input("Enter your action: ").strip().lower()
-            if action in legal_actions:
-                return action
-            else:
-                print(f"Invalid action. Please choose from {legal_actions}")
-
 class CFRAgent(PokerAgent):
     """An agent that uses a CFR-trained strategy"""
     def __init__(self, strategy_path=None, name="CFR"):

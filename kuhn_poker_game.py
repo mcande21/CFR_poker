@@ -691,6 +691,8 @@ class KuhnPokerGame:
 def load_best_strategy():
     """Load the best available strategy"""
     strategy_files = [
+        os.path.join("strategy", "3B_Incremental_best.json"),
+        os.path.join("strategy", "3B_Incremental_strategy.json"),
         os.path.join("strategy", "3B_CFR+_strategy.json"),  # Best choice with correct abstraction
         os.path.join("strategy", "3B_Vanilla_strategy.json"),  # Second choice
         os.path.join("strategy", "3B_Linear_strategy.json")   # Third choice

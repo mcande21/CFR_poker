@@ -1,3 +1,4 @@
+# Evnironment for Kuhn Poker
 import random
 
 class KuhnPokerEnv:

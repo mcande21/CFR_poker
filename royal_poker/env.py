@@ -1,5 +1,6 @@
 import random
 from config import Config
+import copy
 
 class KuhnPokerEnv:
     def __init__(self):
@@ -113,3 +114,39 @@ class KuhnPokerEnv:
             return 0.25
         else:
             return -0.75
+
+    def clone(self):
+        """Create a deep copy of the environment for simulation"""
+        new_env = KuhnPokerEnv()
+        new_env.deck = self.deck.copy()
+        new_env.hands = self.hands.copy()
+        new_env.pot = self.pot
+        new_env.current_player = self.current_player
+        new_env.history = self.history.copy()
+        new_env.terminal = self.terminal
+        if hasattr(self, 'winner'):
+            new_env.winner = self.winner
+        return new_env
+    
+    def set_state(self, bucket, history):
+        """Set the environment to a specific state for counterfactual simulations"""
+        # Reset first
+        self.pot = 2  # Starting pot (both players ante 1)
+        self.current_player = 0
+        self.history = []
+        self.terminal = False
+        
+        # Set cards based on bucket
+        # In Kuhn poker, bucket is the card value (0=Jack, 1=Queen, 2=King)
+        opponent_cards = [i for i in range(3) if i != bucket]
+        opponent_card = random.choice(opponent_cards)
+        self.hands = [bucket, opponent_card]
+        
+        # Replay the history actions to reach the desired state
+        current_history = list(history)
+        for action in current_history:
+            self.step(action)
+    
+    def is_terminal(self):
+        """Check if the game is in a terminal state"""
+        return self.terminal
