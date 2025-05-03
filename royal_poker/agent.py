@@ -69,7 +69,7 @@ class RuleBasedAgent(PokerAgent):
         """Select an action based on simple rules"""
         bucket, history = observation
         
-        # Strategy based on card value (bucket)
+        # Strategy based on card value
         # In Kuhn poker: 0 = Jack, 1 = Queen, 2 = King
         
         # First action

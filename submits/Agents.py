@@ -152,3 +152,54 @@ class CFRAgent(object):
         
         # Decay exploration rate
         self.epsilon *= self.decay
+
+
+class RuleBasedAgent(object):
+    """A simple rule-based agent for Kuhn Poker"""
+    def __init__(self, name="RuleBased"):
+        self.name = name
+    
+    def choose(self, observation, legal_actions):
+        """Select an action based on simple rules"""
+        bucket, history = observation
+        
+        # Strategy based on card value
+        # In Kuhn poker: 0 = Jack, 1 = Queen, 2 = King
+        
+        # First action
+        if not history:
+            if bucket == 2:  # King
+                return "bet" if random() < 0.7 else "check"
+            elif bucket == 1:  # Queen
+                return "bet" if random() < 0.3 else "check"
+            else:  # Jack
+                return "bet" if random() < 0.1 else "check"
+        
+        # Responding to check
+        if history[-1] == "check":
+            if bucket == 2:  # King
+                return "bet" if random() < 0.8 else "check"
+            elif bucket == 1:  # Queen
+                return "bet" if random() < 0.5 else "check"
+            else:  # Jack
+                return "bet" if random() < 0.2 else "check"
+        
+        # Responding to bet
+        if history[-1] == "bet":
+            if bucket == 2:  # King
+                return "call"  # Always call with King
+            elif bucket == 1:  # Queen
+                return "call" if random() < 0.7 else "fold"
+            else:  # Jack
+                return "call" if random() < 0.1 else "fold"
+        
+        # Default action (shouldn't reach here in Kuhn poker)
+        return choice(legal_actions)
+    
+    # Adding update method for compatibility with CFR agent interface
+    def update(self, observation, action, reward, next_observation=None, terminal=False):
+        """
+        Rule-based agents don't learn, but implementing this method for interface compatibility
+        """
+        pass
+

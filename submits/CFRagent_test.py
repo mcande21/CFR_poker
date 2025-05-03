@@ -1,7 +1,7 @@
 # Test script for CFR agent
 import numpy as np
 from environment import KuhnPokerEnv
-from cfrAgent import CFRAgent
+from submits.Agents import CFRAgent
 
 def test_cfr_agent():
     """Test the CFR agent"""
