@@ -34,6 +34,7 @@ strategy/*.json
 !strategy/3B_CFR+_strategy.json
 !strategy/3B_Linear_strategy.json
 !strategy/3B_Vanilla_strategy.json
+aipokertutorial/
 
 # Matplotlib generated files
 *.png
