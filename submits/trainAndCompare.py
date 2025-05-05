@@ -1,20 +1,14 @@
-#!/usr/bin/env python
-# Train the CFR agent against a rule-based agent and save the resulting strategy
+# Trainined CFR Agent vs Rule Based Agent. Win rate + Payout + Exploitability
 import os
 import sys
 import time
 import numpy as np
 import matplotlib.pyplot as plt
-from collections import defaultdict
 import json
 
-# Add parent directory to import path
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-# Import environment and agents
 from environment import KuhnPokerEnv
 from Agents import CFRAgent, RuleBasedAgent
-from utils import save_strategy, load_strategy  # Import the strategy utility functions
+from utils import save_strategy
 
 # Ensure strategies directory exists
 if not os.path.exists('submits/strategies'):
@@ -90,11 +84,6 @@ def train_against_rule_based(num_iterations=50000, eval_frequency=5000, epsilon=
             current_exploit = estimate_exploitability(cfr_agent, env, num_samples=1000)
             exploitability.append(current_exploit)
             iterations.append(i)
-            
-            # Save current strategy using utility function
-            strategy_filename = f"submits/strategies/strategy_iter_{i}.json"
-            save_strategy(cfr_agent.get_average_strategy(), strategy_filename)
-            print(f"Strategy saved to {strategy_filename}")
             
             print(f"Iteration {i}: Win rate: {win_rate:.3f}, Avg payout: {avg_payout:.3f}, Exploitability: {current_exploit:.5f}")
             
@@ -359,9 +348,11 @@ def plot_training_results(iterations, win_rates, payouts, exploitability):
 
 if __name__ == "__main__":
     # Train CFR agent against rule-based agent
+    # We have been messing with parameters and they are quite volitile on the graphs because
+    # the values are so small
     train_against_rule_based(
         num_iterations=40000,  # Total training iterations
         eval_frequency=4000,   # How often to evaluate performance
-        epsilon=0.3,           # Initial exploration rate
-        decay=0.999            # Decay rate for exploration
+        epsilon=0.2,           # Initial exploration rate
+        decay=0.990            # Decay rate for exploration
     )
