@@ -36,6 +36,8 @@ def train_against_rule_based(num_iterations=50000, eval_frequency=5000, epsilon=
     
     # Training statistics
     win_rates = []
+    tie_rates = []
+    loss_rates = []
     payouts = []
     exploitability = []
     iterations = []
@@ -76,8 +78,10 @@ def train_against_rule_based(num_iterations=50000, eval_frequency=5000, epsilon=
         # Periodic evaluation
         if i % eval_frequency == 0 or i == num_iterations:
             # Evaluate against rule-based agent
-            win_rate, avg_payout = evaluate_against_rule(cfr_agent, rule_agent, env, num_eval_games=1000)
+            win_rate, tie_rate, loss_rate, avg_payout = evaluate_against_rule(cfr_agent, rule_agent, env, num_eval_games=1000)
             win_rates.append(win_rate)
+            tie_rates.append(tie_rate)
+            loss_rates.append(loss_rate)
             payouts.append(avg_payout)
             
             # Estimate exploitability (simplified)
@@ -85,12 +89,14 @@ def train_against_rule_based(num_iterations=50000, eval_frequency=5000, epsilon=
             exploitability.append(current_exploit)
             iterations.append(i)
             
-            print(f"Iteration {i}: Win rate: {win_rate:.3f}, Avg payout: {avg_payout:.3f}, Exploitability: {current_exploit:.5f}")
+            print(f"Iteration {i}: Win rate: {win_rate:.3f}, Tie rate: {tie_rate:.3f}, Loss rate: {loss_rate:.3f}, Avg payout: {avg_payout:.3f}, Exploitability: {current_exploit:.5f}")
             
             # Save statistics
             stats = {
                 'iterations': iterations,
                 'win_rates': win_rates,
+                'tie_rates': tie_rates,
+                'loss_rates': loss_rates,
                 'payouts': payouts,
                 'exploitability': exploitability,
                 'params': {
@@ -103,10 +109,12 @@ def train_against_rule_based(num_iterations=50000, eval_frequency=5000, epsilon=
                 json.dump(stats, f)
     
     # Final evaluation
-    final_win_rate, final_payout = evaluate_against_rule(cfr_agent, rule_agent, env, num_eval_games=5000)
+    final_win_rate, final_tie_rate, final_loss_rate, final_payout = evaluate_against_rule(cfr_agent, rule_agent, env, num_eval_games=5000)
     
     print(f"\nTraining completed!")
     print(f"Final win rate against rule-based agent: {final_win_rate:.3f}")
+    print(f"Final tie rate: {final_tie_rate:.3f}")
+    print(f"Final loss rate: {final_loss_rate:.3f}")
     print(f"Final average payout: {final_payout:.3f}")
     
     # Save final strategy using utility function
@@ -115,7 +123,7 @@ def train_against_rule_based(num_iterations=50000, eval_frequency=5000, epsilon=
     print(f"Final strategy saved to {final_strategy_path}")
     
     # Create and save plots
-    plot_training_results(iterations, win_rates, payouts, exploitability)
+    plot_training_results(iterations, win_rates, tie_rates, loss_rates, payouts, exploitability)
     
     return cfr_agent
 
@@ -130,9 +138,11 @@ def evaluate_against_rule(cfr_agent, rule_agent, env, num_eval_games=1000):
         num_eval_games: Number of games to evaluate
         
     Returns:
-        (win_rate, average_payout)
+        (win_rate, tie_rate, loss_rate, average_payout)
     """
     wins = 0
+    ties = 0
+    losses = 0
     total_payouts = 0
     
     # Turn off exploration during evaluation
@@ -159,11 +169,19 @@ def evaluate_against_rule(cfr_agent, rule_agent, env, num_eval_games=1000):
         
         if final_payoff > 0:
             wins += 1
+        elif final_payoff < 0:
+            losses += 1
+        else:
+            ties += 1
     
     # Restore exploration rate
     cfr_agent.epsilon = original_epsilon
     
-    return wins / num_eval_games, total_payouts / num_eval_games
+    win_rate = wins / num_eval_games
+    tie_rate = ties / num_eval_games
+    loss_rate = losses / num_eval_games
+    
+    return win_rate, tie_rate, loss_rate, total_payouts / num_eval_games
 
 def estimate_exploitability(cfr_agent, env, num_samples=1000):
     """
@@ -312,39 +330,58 @@ def simulate_opponent_action(cfr_agent, state):
     else:
         return abstract_action
 
-def plot_training_results(iterations, win_rates, payouts, exploitability):
+def plot_training_results(iterations, win_rates, tie_rates, loss_rates, payouts, exploitability):
     """Create and save plots of training metrics"""
-    plt.figure(figsize=(15, 10))
+    # Create figure for all plots
+    plt.figure(figsize=(15, 15))
     
-    # Win rate plot
-    plt.subplot(2, 2, 1)
-    plt.plot(iterations, win_rates, marker='o')
-    plt.title('Win Rate vs. Rule-Based Agent')
+    # Game metrics plot (win, tie, loss rates)
+    plt.subplot(3, 1, 1)
+    plt.plot(iterations, win_rates, marker='o', label='Win Rate', color='green')
+    plt.plot(iterations, tie_rates, marker='s', label='Tie Rate', color='blue')
+    plt.plot(iterations, loss_rates, marker='^', label='Loss Rate', color='red')
+    plt.title('Game Metrics vs. Rule-Based Agent')
     plt.xlabel('Training Iterations')
-    plt.ylabel('Win Rate')
+    plt.ylabel('Rate')
+    plt.legend()
     plt.grid(True)
     
     # Average payout plot
-    plt.subplot(2, 2, 2)
-    plt.plot(iterations, payouts, marker='o', color='green')
+    plt.subplot(3, 1, 2)
+    plt.plot(iterations, payouts, marker='o', color='purple')
     plt.title('Average Payout vs. Rule-Based Agent')
     plt.xlabel('Training Iterations')
     plt.ylabel('Average Payout')
     plt.grid(True)
     
     # Exploitability plot
-    plt.subplot(2, 2, 3)
-    plt.plot(iterations, exploitability, marker='o', color='red')
+    plt.subplot(3, 1, 3)
+    plt.plot(iterations, exploitability, marker='o', color='orange')
     plt.title('Estimated Exploitability')
     plt.xlabel('Training Iterations')
     plt.ylabel('Exploitability')
     plt.yscale('log')  # Log scale for exploitability
     plt.grid(True)
     
-    # Save the figure
+    # Save the figure with all plots
     plt.tight_layout()
     plt.savefig('submits/strategies/training_results.png')
+    
+    # Create a separate figure just for game metrics with a clearer view
+    plt.figure(figsize=(10, 6))
+    plt.plot(iterations, win_rates, marker='o', label='Win Rate', color='green', linewidth=2)
+    plt.plot(iterations, tie_rates, marker='s', label='Tie Rate', color='blue', linewidth=2)
+    plt.plot(iterations, loss_rates, marker='^', label='Loss Rate', color='red', linewidth=2)
+    plt.title('Game Metrics vs. Rule-Based Agent')
+    plt.xlabel('Training Iterations')
+    plt.ylabel('Rate')
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.savefig('submits/strategies/game_metrics.png')
+    
     print("Training results visualized and saved to submits/strategies/training_results.png")
+    print("Game metrics visualized and saved to submits/strategies/game_metrics.png")
 
 if __name__ == "__main__":
     # Train CFR agent against rule-based agent
